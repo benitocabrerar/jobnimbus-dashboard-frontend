@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar CSS Test</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: Arial, sans-serif; 
+            overflow-x: hidden;
+        }
+        
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1200;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-nav {
+            padding: 16px 8px;
+        }
+        
+        .nav-item {
+            padding: 12px 16px;
+            margin: 4px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+        
+        .app-bar {
+            height: 64px;
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1100;
+        }
+        
+        .content-area {
+            padding: 24px;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-280px);
+                transition: transform 0.3s;
+            }
+            
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+        }
+        
+        .debug-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-info">
+        <div>Viewport: <span id="viewport"></span></div>
+        <div>Sidebar: <span id="sidebar-status"></span></div>
+        <div>CSS Test: ACTIVE</div>
+    </div>
+
+    <div class="app-container">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>JobNimbus MCP</h2>
+                <p>Dashboard Gerencial</p>
+            </div>
+            
+            <div class="sidebar-nav">
+                <div class="nav-item">📊 Dashboard Principal</div>
+                <div class="nav-item">👑 Executive Command Center</div>
+                <div class="nav-item">🚀 RTX 5090 GPU Center</div>
+                <div class="nav-item">👥 Contactos</div>
+                <div class="nav-item">💼 Trabajos</div>
+                <div class="nav-item">✅ Tareas</div>
+                <div class="nav-item">📝 Actividades</div>
+                <div class="nav-item">📈 Analytics Avanzado</div>
+                <div class="nav-item">💰 Centro Financiero</div>
+                <div class="nav-item">📊 Exportaciones</div>
+                <div class="nav-item">🤖 Chat MCP</div>
+                <div class="nav-item">⚙️ Configuración</div>
+                <div class="nav-item">📄 Estimaciones</div>
+                <div class="nav-item">📁 Archivos</div>
+                <div class="nav-item">🔧 Estado del Sistema</div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <div class="app-bar">
+                <button onclick="toggleSidebar()" style="background: none; border: none; color: white; margin-right: 16px; cursor: pointer; font-size: 18px;">☰</button>
+                <h1>Sidebar CSS Test</h1>
+            </div>
+            
+            <div class="content-area">
+                <h2>🔧 Test de Sidebar CSS</h2>
+                
+                <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3>Diagnóstico:</h3>
+                    <p><strong>✅ Si puedes ver el sidebar azul a la izquierda:</strong> El problema es específico de Material-UI Drawer</p>
+                    <p><strong>❌ Si NO puedes ver el sidebar:</strong> El problema es de CSS o viewport</p>
+                </div>
+                
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3>Comparación con la aplicación React:</h3>
+                    <p>1. Esta página usa CSS puro - debería funcionar siempre</p>
+                    <p>2. La aplicación React usa Material-UI Drawer</p>
+                    <p>3. Si esta funciona pero la React no, el problema está en el Drawer component</p>
+                </div>
+                
+                <div style="background: #fff3e0; padding: 20px; border-radius: 8px;">
+                    <h3>Instrucciones:</h3>
+                    <p>• Compara esta página con <a href="http://localhost:5174" target="_blank" style="color: #1976d2;">http://localhost:5174</a></p>
+                    <p>• En móvil, usa el botón ☰ para mostrar/ocultar sidebar</p>
+                    <p>• Reporta si puedes ver el sidebar aquí pero no en la app React</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function updateDebugInfo() {
+            document.getElementById('viewport').textContent = window.innerWidth + 'x' + window.innerHeight;
+            
+            const sidebar = document.getElementById('sidebar');
+            const rect = sidebar.getBoundingClientRect();
+            const visible = rect.left >= -280 && rect.left <= 0;
+            document.getElementById('sidebar-status').textContent = visible ? 'VISIBLE' : 'HIDDEN';
+        }
+        
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('mobile-open');
+            updateDebugInfo();
+        }
+        
+        // Update debug info
+        updateDebugInfo();
+        window.addEventListener('resize', updateDebugInfo);
+        
+        console.log('Sidebar CSS Test loaded');
+        console.log('Sidebar element:', document.getElementById('sidebar'));
+        console.log('Sidebar visible:', document.getElementById('sidebar-status').textContent);
+    </script>
+</body>
+</html>

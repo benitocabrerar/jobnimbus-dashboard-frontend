@@ -1,0 +1,1 @@
+// Backup del App.tsx original antes de las modificaciones de diagnóstico

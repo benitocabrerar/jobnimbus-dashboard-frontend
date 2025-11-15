@@ -1,0 +1,1 @@
+console.log('=== TASK DATE DEBUG ==='); console.log('Sample tasks with dates:', tasks.slice(0, 3).map(t => ({ id: t.id, name: t.name, date_created: t.date_created, date_start: t.date_start, date_end: t.date_end, due_date: t.due_date })));

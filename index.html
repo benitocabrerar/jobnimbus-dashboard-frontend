@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobNimbus RTX 5090 Ultra | PowerIA Enterprise</title>
+    
+    <!-- 🔥 RTX 5090 GPU Force Configuration -->
+    <script src="/rtx5090-force.js" defer></script>
+    
+    <style>
+      /* RTX 5090 GPU Pre-optimization */
+      html, body {
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        will-change: transform, opacity;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+      }
+      
+      #app {
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        will-change: transform, opacity;
+      }
+      
+      /* Loading indicator with GPU acceleration */
+      .rtx5090-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(45deg, #1a1a2e, #16213e, #1a1a2e);
+        background-size: 400% 400%;
+        animation: rtx5090-gradient 2s ease infinite;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #00ff88;
+        font-family: monospace;
+        font-size: 24px;
+        transform: translateZ(0);
+      }
+      
+      @keyframes rtx5090-gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- RTX 5090 Loading Screen -->
+    <div class="rtx5090-loading" id="rtx5090-loader">
+      🔥 RTX 5090 INITIALIZING...
+    </div>
+    
+    <div id="app"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <script>
+      // Hide loading screen when React loads
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const loader = document.getElementById('rtx5090-loader');
+          if (loader) {
+            loader.style.opacity = '0';
+            loader.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => loader.remove(), 500);
+          }
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>

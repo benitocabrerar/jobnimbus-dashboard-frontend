@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page - JobNimbus</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px;
+            background: linear-gradient(45deg, #1976d2, #1565c0);
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .tab-list {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .tab-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 JobNimbus RTX 5090 Dashboard Test</h1>
+        
+        <p>Si puedes ver esta página, el frontend está funcionando.</p>
+        
+        <h2>🔥 RTX 5090 Status</h2>
+        <div id="gpu-status">Cargando estado GPU...</div>
+        
+        <h2>📋 Pestañas Disponibles</h2>
+        <div class="tab-list">
+            <div class="tab-item">📊 Dashboard Principal</div>
+            <div class="tab-item">👑 Executive Command Center</div>
+            <div class="tab-item">🚀 RTX 5090 GPU Center</div>
+            <div class="tab-item">👥 Contactos</div>
+            <div class="tab-item">💼 Trabajos</div>
+            <div class="tab-item">✅ Tareas</div>
+            <div class="tab-item">📝 Actividades</div>
+            <div class="tab-item">📈 Analytics Avanzado</div>
+            <div class="tab-item">💰 Centro Financiero</div>
+            <div class="tab-item">📊 Exportaciones</div>
+            <div class="tab-item">🤖 Chat MCP</div>
+            <div class="tab-item">⚙️ Configuración</div>
+        </div>
+        
+        <h2>🔗 Enlaces de Navegación</h2>
+        <p>Vuelve a la aplicación principal: <a href="/" style="color: yellow;">http://localhost:5173</a></p>
+        <p>RTX 5090 Dashboard: <a href="/#/gpu" style="color: yellow;">http://localhost:5173/#/gpu</a></p>
+        
+        <h2>🧪 Test RTX 5090 Backend</h2>
+        <button onclick="testGPU()" style="padding: 10px 20px; font-size: 16px; margin: 10px;">Probar RTX 5090</button>
+        <div id="test-results" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        // Test RTX 5090 status
+        async function testGPU() {
+            const resultsDiv = document.getElementById('test-results');
+            resultsDiv.innerHTML = 'Probando RTX 5090...';
+            
+            try {
+                const response = await fetch('http://localhost:8000/rtx5090/ultra-status');
+                const data = await response.json();
+                
+                resultsDiv.innerHTML = `
+                    <div style="background: rgba(0,255,0,0.2); padding: 15px; border-radius: 5px;">
+                        <h3>✅ RTX 5090 FUNCIONANDO</h3>
+                        <p><strong>GPU:</strong> ${data.mcp_gpu_status.gpu_name}</p>
+                        <p><strong>Streams:</strong> ${data.streams_active}</p>
+                        <p><strong>Utilización:</strong> ${data.gpu_utilization.gpu_utilization_percent}%</p>
+                        <p><strong>Memoria:</strong> ${data.gpu_utilization.memory_utilization_percent}%</p>
+                        <p><strong>Background Workload:</strong> ${data.background_workload}</p>
+                    </div>
+                `;
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div style="background: rgba(255,0,0,0.2); padding: 15px; border-radius: 5px;">
+                        <h3>❌ ERROR</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Auto-test on load
+        setTimeout(testGPU, 1000);
+        
+        // Update GPU status every 5 seconds
+        setInterval(async () => {
+            try {
+                const response = await fetch('http://localhost:8000/rtx5090/ultra-status');
+                const data = await response.json();
+                document.getElementById('gpu-status').innerHTML = `
+                    ✅ RTX 5090 ACTIVO - Utilización: ${data.gpu_utilization.gpu_utilization_percent}% | 
+                    Memoria: ${data.gpu_utilization.memory_utilization_percent}% | 
+                    Temp: ${data.gpu_utilization.temperature_celsius}°C
+                `;
+            } catch (error) {
+                document.getElementById('gpu-status').innerHTML = '❌ Error conectando al RTX 5090';
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

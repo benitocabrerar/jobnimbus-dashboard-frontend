@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Console</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #000; color: #0f0; }
+        .error { color: #f00; }
+        .warning { color: #fa0; }
+        .info { color: #0af; }
+        .log { color: #0f0; }
+        #console { 
+            background: #111; 
+            border: 1px solid #333; 
+            padding: 10px; 
+            max-height: 400px; 
+            overflow-y: auto; 
+            white-space: pre-wrap;
+        }
+        button { 
+            background: #333; 
+            color: white; 
+            border: 1px solid #555; 
+            padding: 10px 20px; 
+            margin: 5px; 
+            cursor: pointer; 
+        }
+        button:hover { background: #555; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Debug Console para JobNimbus</h1>
+    
+    <div>
+        <button onclick="checkMainApp()">Verificar App Principal</button>
+        <button onclick="checkReactErrors()">Verificar Errores React</button>
+        <button onclick="checkMUIErrors()">Verificar Material-UI</button>
+        <button onclick="clearConsole()">Limpiar Console</button>
+    </div>
+    
+    <div id="console"></div>
+    
+    <script>
+        const consoleDiv = document.getElementById('console');
+        
+        function log(message, type = 'log') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = type;
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            consoleDiv.appendChild(logEntry);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+        
+        function clearConsole() {
+            consoleDiv.innerHTML = '';
+        }
+        
+        // Capture original console methods
+        const originalConsole = {
+            log: console.log,
+            error: console.error,
+            warn: console.warn,
+            info: console.info
+        };
+        
+        // Override console methods
+        console.log = (...args) => {
+            log(args.join(' '), 'log');
+            originalConsole.log.apply(console, args);
+        };
+        
+        console.error = (...args) => {
+            log('ERROR: ' + args.join(' '), 'error');
+            originalConsole.error.apply(console, args);
+        };
+        
+        console.warn = (...args) => {
+            log('WARNING: ' + args.join(' '), 'warning');
+            originalConsole.warn.apply(console, args);
+        };
+        
+        console.info = (...args) => {
+            log('INFO: ' + args.join(' '), 'info');
+            originalConsole.info.apply(console, args);
+        };
+        
+        function checkMainApp() {
+            log('Verificando aplicación principal...', 'info');
+            
+            fetch('http://localhost:5173')
+                .then(response => response.text())
+                .then(html => {
+                    if (html.includes('JobNimbus')) {
+                        log('✅ HTML principal carga correctamente', 'log');
+                    } else {
+                        log('❌ HTML principal no contiene JobNimbus', 'error');
+                    }
+                    
+                    if (html.includes('rtx5090-force.js')) {
+                        log('✅ RTX 5090 script incluido', 'log');
+                    } else {
+                        log('⚠️ RTX 5090 script no encontrado', 'warning');
+                    }
+                })
+                .catch(error => {
+                    log('❌ Error cargando HTML principal: ' + error.message, 'error');
+                });
+        }
+        
+        function checkReactErrors() {
+            log('Verificando errores de React...', 'info');
+            
+            // Check if React is loaded
+            if (typeof React !== 'undefined') {
+                log('✅ React está disponible globalmente', 'log');
+            } else {
+                log('⚠️ React no está disponible globalmente', 'warning');
+            }
+            
+            // Check for common React errors in the main app
+            const iframe = document.createElement('iframe');
+            iframe.src = 'http://localhost:5173';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+            
+            setTimeout(() => {
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    const errors = iframeDoc.querySelectorAll('[class*="error"], [id*="error"]');
+                    
+                    if (errors.length > 0) {
+                        log(`❌ Encontrados ${errors.length} elementos de error en la página`, 'error');
+                    } else {
+                        log('✅ No se encontraron elementos de error visibles', 'log');
+                    }
+                } catch (e) {
+                    log('⚠️ No se puede acceder al contenido del iframe (CORS)', 'warning');
+                }
+                
+                document.body.removeChild(iframe);
+            }, 3000);
+        }
+        
+        function checkMUIErrors() {
+            log('Verificando Material-UI...', 'info');
+            
+            // Try to load MUI components
+            const testScript = document.createElement('script');
+            testScript.textContent = `
+                // This would be executed in the context where MUI is loaded
+                if (typeof window !== 'undefined' && window.location.href.includes('localhost:5173')) {
+                    console.log('Testing MUI availability...');
+                }
+            `;
+            document.head.appendChild(testScript);
+            
+            log('Material-UI check enviado', 'info');
+        }
+        
+        // Initial checks
+        log('Debug Console iniciado', 'info');
+        log('Abre la aplicación principal en otra pestaña: http://localhost:5173', 'info');
+        log('Luego haz clic en los botones de verificación arriba', 'info');
+        
+        // Listen for errors from other windows
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'error') {
+                log('ERROR desde app principal: ' + event.data.message, 'error');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Diagnostic</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar { 
+            width: 280px; 
+            background: linear-gradient(180deg, #1976d2 0%, #1565c0 100%);
+            color: white;
+            padding: 20px;
+        }
+        .content { flex: 1; padding: 20px; background: #f5f5f5; }
+        .nav-item { 
+            padding: 10px; 
+            margin: 5px 0; 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 5px; 
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.2); }
+        .header { background: #1976d2; padding: 15px 20px; color: white; margin: -20px -20px 20px -20px; }
+        .test-result { 
+            background: rgba(0,255,0,0.1); 
+            border: 1px solid #4caf50; 
+            padding: 15px; 
+            border-radius: 5px; 
+            margin: 10px 0; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="header">
+                <h2>JobNimbus MCP</h2>
+                <p>Dashboard Gerencial</p>
+            </div>
+            
+            <div class="nav-item">📊 Dashboard Principal</div>
+            <div class="nav-item">👑 Executive Command Center</div>
+            <div class="nav-item">🚀 RTX 5090 GPU Center</div>
+            <div class="nav-item">👥 Contactos</div>
+            <div class="nav-item">💼 Trabajos</div>
+            <div class="nav-item">✅ Tareas</div>
+            <div class="nav-item">📝 Actividades</div>
+            <div class="nav-item">📈 Analytics Avanzado</div>
+            <div class="nav-item">💰 Centro Financiero</div>
+            <div class="nav-item">📊 Exportaciones</div>
+            <div class="nav-item">🤖 Chat MCP</div>
+            <div class="nav-item">⚙️ Configuración</div>
+            <div class="nav-item">📄 Estimaciones</div>
+            <div class="nav-item">📁 Archivos</div>
+            <div class="nav-item">🔧 Estado del Sistema</div>
+        </div>
+        
+        <div class="content">
+            <h1>🔧 Diagnóstico del Sidebar</h1>
+            
+            <div class="test-result">
+                <h3>✅ Test 1: HTML/CSS Puro</h3>
+                <p><strong>Resultado:</strong> Si puedes ver el sidebar a la izquierda, HTML y CSS están funcionando.</p>
+            </div>
+            
+            <div id="react-test">
+                <h3>⏳ Test 2: React Components</h3>
+                <p>Cargando React...</p>
+            </div>
+            
+            <div id="navigation-test">
+                <h3>📋 Problemas Posibles:</h3>
+                <ul>
+                    <li>Context Provider no inicializado correctamente</li>
+                    <li>Error en useOffice hook</li>
+                    <li>CSS conflictivo entre archivos</li>
+                    <li>Error de JavaScript bloqueando renderizado</li>
+                    <li>Material-UI theme issues</li>
+                </ul>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <h3>🔗 Enlaces de Prueba:</h3>
+                <p><a href="/" style="color: #1976d2; font-weight: bold;">Volver al Dashboard Principal</a></p>
+                <p><a href="/#/gpu" style="color: #1976d2; font-weight: bold;">Ir al RTX 5090 Dashboard</a></p>
+            </div>
+            
+            <div style="margin-top: 30px; padding: 15px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px;">
+                <h4>💡 Instrucciones:</h4>
+                <p>1. Compara esta página con la aplicación principal</p>
+                <p>2. Si aquí ves el sidebar pero en la app no, es un problema de React</p>
+                <p>3. Abre Developer Tools (F12) y revisa la consola de errores</p>
+                <p>4. Si hay errores de JavaScript, esos están bloqueando el renderizado</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test React functionality
+        setTimeout(() => {
+            const reactTest = document.getElementById('react-test');
+            try {
+                // Simple React test
+                const testElement = React.createElement('div', {
+                    style: { background: 'rgba(0,255,0,0.1)', padding: '15px', borderRadius: '5px' }
+                }, [
+                    React.createElement('h3', { key: 'title' }, '✅ Test 2: React Components'),
+                    React.createElement('p', { key: 'text' }, 'React está funcionando correctamente en esta página.')
+                ]);
+                
+                ReactDOM.render(testElement, reactTest);
+            } catch (error) {
+                reactTest.innerHTML = `
+                    <div style="background: rgba(255,0,0,0.1); padding: 15px; border-radius: 5px;">
+                        <h3>❌ Test 2: React Components</h3>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                    </div>
+                `;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
