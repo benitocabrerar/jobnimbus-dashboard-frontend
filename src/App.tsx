@@ -251,6 +251,43 @@ const navigationItems: NavigationItem[] = [
 ];
 
 function AppContent() {
+  const location = useLocation();
+
+  // Check if we're on a public route that should not have the dashboard chrome
+  const isPublicRoute = location.pathname === '/' ||
+                        location.pathname === '/login' ||
+                        location.pathname === '/register';
+
+  // If it's a public route, render without dashboard chrome
+  if (isPublicRoute) {
+    return (
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
+      </Routes>
+    );
+  }
+
+  // For authenticated routes, render with full dashboard layout
+  return <DashboardLayout />;
+}
+
+function DashboardLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState<{
@@ -692,29 +729,8 @@ function AppContent() {
         
         <Container maxWidth={false} sx={{ py: 3, px: 3 }}>
           {isLoading && <LoadingSpinner />}
-          
+
           <Routes>
-            {/* Landing Page */}
-            <Route path="/" element={<Landing />} />
-
-            {/* Public Routes */}
-            <Route
-              path="/login"
-              element={
-                <PublicRoute>
-                  <Login />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <PublicRoute>
-                  <Register />
-                </PublicRoute>
-              }
-            />
-
             {/* Protected Routes */}
             <Route
               path="/app"
