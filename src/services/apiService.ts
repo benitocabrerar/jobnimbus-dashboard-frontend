@@ -343,12 +343,20 @@ class JobNimbusApiService {
     console.log(`🔍 API: getDashboardSummary called for location: ${this.currentLocation}`);
     const cacheKey = CacheKeys.DASHBOARD_SUMMARY('current', this.currentLocation);
     console.log(`🔍 API: Dashboard cache key: ${cacheKey}`);
-    
+
     return rtxCache.get(
       cacheKey,
       async () => {
         try {
-          const response = await this.makeApiCall('/dashboard/summary');
+          const response = await this.makeApiCall('/api/mcp/profitability-dashboard', {
+            method: 'POST',
+            body: JSON.stringify({
+              instance: this.currentLocation,
+              dashboard_type: 'executive',
+              include_forecasts: true,
+              use_invoiced_amounts: true
+            })
+          });
           const data = await response.json();
           return data;
         } catch (error) {
