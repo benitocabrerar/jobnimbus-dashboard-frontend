@@ -39,7 +39,7 @@ const SimpleMonthlySummary: React.FC = () => {
       const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM format
 
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/mcp/monthly-summary`,
+        `${import.meta.env.VITE_API_URL}/mcp/monthly-summary`,
         {
           instance: instance,
           month: currentMonth
