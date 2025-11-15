@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { jobNimbusApi, APP_CONFIG, JobNimbusLocation, LocationInfo } from '../services/apiService';
 import { useOffice } from '../contexts/OfficeContext';
+import { useAuth } from '../contexts/AuthContext';
 import {
   Grid,
   Card,
@@ -66,7 +67,10 @@ import {
   Psychology,
   Insights,
   LocationOn,
-  SwapHoriz
+  SwapHoriz,
+  Settings,
+  Security,
+  Description as DescriptionIcon
 } from '@mui/icons-material';
 import {
   AreaChart,
@@ -85,6 +89,13 @@ import {
   Line,
   Legend
 } from 'recharts';
+
+// Admin components
+import AdminDashboard from '../components/admin/AdminDashboard';
+import UserManagement from '../components/admin/UserManagement';
+import RoleManagement from '../components/admin/RoleManagement';
+import SystemConfig from '../components/admin/SystemConfig';
+import SystemStats from '../components/admin/SystemStats';
 
 interface DashboardProps {
   showNotification: (message: string, severity?: 'success' | 'error' | 'info' | 'warning') => void;
@@ -186,6 +197,7 @@ interface DateRange {
 
 export default function DashboardView({ showNotification }: DashboardProps) {
   const { currentOffice } = useOffice();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [tabValue, setTabValue] = useState(0);
   const [detailDialog, setDetailDialog] = useState<{ open: boolean; type?: string; data?: any }>({
@@ -1517,11 +1529,16 @@ export default function DashboardView({ showNotification }: DashboardProps) {
       {/* Charts Section */}
       <Paper sx={{ p: 3, mb: 3 }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
-          <Tabs value={tabValue} onChange={handleTabChange}>
+          <Tabs value={tabValue} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
             <Tab icon={<BarChart />} label="Tendencias Mensuales" />
             <Tab icon={<PieChart />} label="Estado de Trabajos" />
             <Tab icon={<Analytics />} label="Rendimiento del Equipo" />
             <Tab icon={<AttachMoney />} label="Flujo de Ingresos" />
+            {user?.role === 'admin' && <Tab icon={<SpeedIcon />} label="Panel Admin" />}
+            {user?.role === 'admin' && <Tab icon={<People />} label="Usuarios" />}
+            {user?.role === 'admin' && <Tab icon={<Security />} label="Roles" />}
+            {user?.role === 'admin' && <Tab icon={<Settings />} label="Configuración" />}
+            {user?.role === 'admin' && <Tab icon={<DescriptionIcon />} label="Logs" />}
           </Tabs>
         </Box>
 
@@ -1818,6 +1835,41 @@ export default function DashboardView({ showNotification }: DashboardProps) {
                 </>
               )}
             </Box>
+          </Box>
+        )}
+
+        {/* Panel Admin - Admin Dashboard */}
+        {user?.role === 'admin' && tabValue === 4 && (
+          <Box>
+            <AdminDashboard showNotification={showNotification} />
+          </Box>
+        )}
+
+        {/* Usuarios - User Management */}
+        {user?.role === 'admin' && tabValue === 5 && (
+          <Box>
+            <UserManagement />
+          </Box>
+        )}
+
+        {/* Roles - Role Management */}
+        {user?.role === 'admin' && tabValue === 6 && (
+          <Box>
+            <RoleManagement />
+          </Box>
+        )}
+
+        {/* Configuración - System Config */}
+        {user?.role === 'admin' && tabValue === 7 && (
+          <Box>
+            <SystemConfig />
+          </Box>
+        )}
+
+        {/* Logs/Sistema - System Stats */}
+        {user?.role === 'admin' && tabValue === 8 && (
+          <Box>
+            <SystemStats />
           </Box>
         )}
       </Paper>

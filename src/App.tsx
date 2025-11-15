@@ -246,12 +246,6 @@ const navigationItems: NavigationItem[] = [
     label: 'Estado del Sistema',
     icon: <SystemIcon />,
     description: 'Monitoreo de endpoints MCP'
-  },
-  {
-    path: '/admin/users',
-    label: 'Panel de Admin',
-    icon: <AdminIcon />,
-    description: 'Gestión de usuarios y credenciales'
   }
 ];
 
@@ -324,11 +318,6 @@ function AppContent() {
     }
   };
 
-  const handleAdminPanel = () => {
-    handleUserMenuClose();
-    navigate('/admin');
-  };
-
   const getCurrentPageInfo = () => {
     const currentItem = navigationItems.find(item => item.path === location.pathname);
     return currentItem || navigationItems[0];
@@ -354,15 +343,7 @@ function AppContent() {
       </Toolbar>
       
       <List sx={{ px: 1, pt: 2 }}>
-        {navigationItems
-          .filter((item) => {
-            // Only show admin panel to admin users
-            if (item.path === '/admin/users') {
-              return user?.role === 'admin';
-            }
-            return true;
-          })
-          .map((item) => (
+        {navigationItems.map((item) => (
           <ListItem
             key={item.path}
             component={Link}
@@ -643,15 +624,6 @@ function AppContent() {
           />
         </Box>
 
-        {user?.role === 'admin' && (
-          <MenuItem onClick={handleAdminPanel}>
-            <ListItemIcon>
-              <AdminIcon fontSize="small" />
-            </ListItemIcon>
-            Admin Panel
-          </MenuItem>
-        )}
-
         <MenuItem onClick={handleUserMenuClose}>
           <ListItemIcon>
             <PersonIcon fontSize="small" />
@@ -865,16 +837,6 @@ function AppContent() {
               element={
                 <PrivateRoute>
                   <SystemStatusView showNotification={showNotification} />
-                </PrivateRoute>
-              }
-            />
-
-            {/* Admin Routes - Admin Only */}
-            <Route
-              path="/admin/*"
-              element={
-                <PrivateRoute requiredRoles={['admin']}>
-                  <AdminPanel />
                 </PrivateRoute>
               }
             />
