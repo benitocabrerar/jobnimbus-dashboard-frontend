@@ -220,7 +220,17 @@ class AuthApiService {
       throw new Error(error.message || 'Login failed');
     }
 
-    const data: AuthResponse = await response.json();
+    const responseData: any = await response.json();
+
+    // Backend sends data in nested structure: { success, data: { user, accessToken, ... } }
+    // Flatten it for consistency with AuthResponse interface
+    const data: AuthResponse = {
+      success: responseData.success,
+      user: responseData.data?.user || responseData.user,
+      accessToken: responseData.data?.accessToken || responseData.accessToken,
+      refreshToken: responseData.data?.refreshToken || responseData.refreshToken,
+      message: responseData.message,
+    };
 
     if (data.success && data.accessToken && data.refreshToken) {
       this.saveTokens(data.accessToken, data.refreshToken);
@@ -378,7 +388,17 @@ class AuthApiService {
       throw new Error(error.message || 'OAuth login failed');
     }
 
-    const data: AuthResponse = await response.json();
+    const responseData: any = await response.json();
+
+    // Backend sends data in nested structure: { success, data: { user, accessToken, ... } }
+    // Flatten it for consistency with AuthResponse interface
+    const data: AuthResponse = {
+      success: responseData.success,
+      user: responseData.data?.user || responseData.user,
+      accessToken: responseData.data?.accessToken || responseData.accessToken,
+      refreshToken: responseData.data?.refreshToken || responseData.refreshToken,
+      message: responseData.message,
+    };
 
     if (data.success && data.accessToken && data.refreshToken) {
       this.saveTokens(data.accessToken, data.refreshToken);
