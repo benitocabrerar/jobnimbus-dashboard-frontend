@@ -61,7 +61,8 @@ import {
   Computer as GPUIcon,
   Logout as LogoutIcon,
   Person as PersonIcon,
-  AdminPanelSettings as AdminIcon
+  AdminPanelSettings as AdminIcon,
+  CalendarToday as MonthlyIcon
 } from '@mui/icons-material';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -81,6 +82,7 @@ import AttachmentsView from './views/AttachmentsView';
 import ExecutiveView from './views/ExecutiveView';
 import RTX5090Dashboard from './views/RTX5090Dashboard';
 import BillingView from './views/BillingView';
+import MonthlySummaryView from './views/MonthlySummaryView';
 
 // Import components
 import { LoadingSpinner } from './components/LoadingSpinner';
@@ -226,6 +228,12 @@ const navigationItems: NavigationItem[] = [
     label: 'Centro Financiero',
     icon: <AttachMoney />,
     description: 'Dashboard de pagos y facturación'
+  },
+  {
+    path: '/monthly-summary',
+    label: 'Resumen Mensual',
+    icon: <MonthlyIcon />,
+    description: 'Resumen financiero mensual por instancia'
   },
   {
     path: '/attachments',
@@ -833,6 +841,14 @@ function AppContent() {
               element={
                 <PrivateRoute>
                   <BillingView showNotification={showNotification} />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/monthly-summary"
+              element={
+                <PrivateRoute>
+                  <MonthlySummaryView />
                 </PrivateRoute>
               }
             />
