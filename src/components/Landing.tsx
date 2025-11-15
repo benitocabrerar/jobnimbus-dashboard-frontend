@@ -7,7 +7,7 @@ export const Landing: React.FC = () => {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -48,7 +48,7 @@ export const Landing: React.FC = () => {
           marginBottom: '2rem',
         }}>
           <h2 style={{
-            color: '#667eea',
+            color: '#4facfe',
             fontSize: '2rem',
             marginBottom: '1rem',
           }}>
@@ -142,20 +142,20 @@ export const Landing: React.FC = () => {
                 fontSize: '1.2rem',
                 fontWeight: 600,
                 color: 'white',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
                 border: 'none',
                 borderRadius: '50px',
                 cursor: 'pointer',
-                boxShadow: '0 8px 20px rgba(102, 126, 234, 0.4)',
+                boxShadow: '0 8px 20px rgba(79, 172, 254, 0.4)',
                 transition: 'all 0.3s ease',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-3px)';
-                e.currentTarget.style.boxShadow = '0 12px 30px rgba(102, 126, 234, 0.6)';
+                e.currentTarget.style.boxShadow = '0 12px 30px rgba(79, 172, 254, 0.6)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 8px 20px rgba(102, 126, 234, 0.4)';
+                e.currentTarget.style.boxShadow = '0 8px 20px rgba(79, 172, 254, 0.4)';
               }}
             >
               Ingresar al Dashboard
