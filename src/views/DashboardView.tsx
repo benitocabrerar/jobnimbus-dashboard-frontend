@@ -30,7 +30,10 @@ import {
   Stack,
   Fade,
   Zoom,
-  Badge
+  Badge,
+  AppBar,
+  Toolbar,
+  Menu
 } from '@mui/material';
 import {
   TrendingUp,
@@ -70,7 +73,8 @@ import {
   SwapHoriz,
   Settings,
   Security,
-  Description as DescriptionIcon
+  Description as DescriptionIcon,
+  Logout
 } from '@mui/icons-material';
 import {
   AreaChart,
@@ -197,12 +201,13 @@ interface DateRange {
 
 export default function DashboardView({ showNotification }: DashboardProps) {
   const { currentOffice } = useOffice();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [loading, setLoading] = useState(true);
   const [tabValue, setTabValue] = useState(0);
   const [detailDialog, setDetailDialog] = useState<{ open: boolean; type?: string; data?: any }>({
     open: false
   });
+  const [userMenuAnchor, setUserMenuAnchor] = useState<null | HTMLElement>(null);
   
   // 🏢 Estado para ubicación JobNimbus (ahora controlado por App.tsx)
   const [currentLocationInfo, setCurrentLocationInfo] = useState<LocationInfo>(jobNimbusApi.getCurrentLocationInfo());
@@ -1148,6 +1153,20 @@ export default function DashboardView({ showNotification }: DashboardProps) {
     }
   };
 
+  // User menu handlers
+  const handleUserMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setUserMenuAnchor(event.currentTarget);
+  };
+
+  const handleUserMenuClose = () => {
+    setUserMenuAnchor(null);
+  };
+
+  const handleLogout = async () => {
+    handleUserMenuClose();
+    await logout();
+  };
+
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="400px">
@@ -1161,6 +1180,101 @@ export default function DashboardView({ showNotification }: DashboardProps) {
 
   return (
     <Box>
+      {/* User Account Menu */}
+      <AppBar position="static" elevation={0} sx={{ bgcolor: 'background.paper', mb: 3 }}>
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'primary.main', fontWeight: 'bold' }}>
+            JobNimbus Dashboard
+          </Typography>
+
+          {currentOffice && (
+            <Chip
+              label={currentOffice === 'stamford' ? 'Stamford' : 'Guilford'}
+              color="primary"
+              size="small"
+              sx={{ mr: 2 }}
+            />
+          )}
+
+          {user && (
+            <>
+              <Tooltip title="Account">
+                <IconButton
+                  onClick={handleUserMenuOpen}
+                  size="small"
+                  sx={{ ml: 2 }}
+                  aria-controls={userMenuAnchor ? 'account-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={userMenuAnchor ? 'true' : undefined}
+                >
+                  <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>
+                    {user.name?.charAt(0).toUpperCase() || 'U'}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                anchorEl={userMenuAnchor}
+                id="account-menu"
+                open={Boolean(userMenuAnchor)}
+                onClose={handleUserMenuClose}
+                onClick={handleUserMenuClose}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                    mt: 1.5,
+                    '& .MuiAvatar-root': {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    '&:before': {
+                      content: '""',
+                      display: 'block',
+                      position: 'absolute',
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: 'background.paper',
+                      transform: 'translateY(-50%) rotate(45deg)',
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              >
+                <MenuItem disabled sx={{ opacity: '1 !important' }}>
+                  <Box>
+                    <Typography variant="body2" fontWeight="bold">
+                      {user.name}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {user.email}
+                    </Typography>
+                    <Box mt={0.5}>
+                      <Chip
+                        label={user.role}
+                        size="small"
+                        color={user.role === 'admin' ? 'error' : user.role === 'manager' ? 'warning' : 'default'}
+                      />
+                    </Box>
+                  </Box>
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleLogout}>
+                  <Logout fontSize="small" sx={{ mr: 1 }} />
+                  Logout
+                </MenuItem>
+              </Menu>
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
+
       {/* Header */}
       <Zoom in={true} timeout={800}>
         <Box>
