@@ -348,16 +348,15 @@ class JobNimbusApiService {
       cacheKey,
       async () => {
         try {
-          const response = await this.makeApiCall('/api/mcp/profitability-dashboard', {
+          const response = await this.makeApiCall('/dashboard/summary', {
             method: 'POST',
             body: JSON.stringify({
               instance: this.currentLocation,
-              dashboard_type: 'executive',
-              include_forecasts: true,
-              use_invoiced_amounts: true
+              period: 'current_month'
             })
           });
           const data = await response.json();
+          console.log('📊 Dashboard summary response:', data);
           return data;
         } catch (error) {
           console.error('Error getting dashboard summary:', error);
