@@ -91,6 +91,7 @@ import { PrivateRoute } from './components/auth/PrivateRoute';
 import { PublicRoute } from './components/auth/PublicRoute';
 import { Login } from './components/auth/Login';
 import { Register } from './components/auth/Register';
+import { Landing } from './components/Landing';
 import { AdminPanel } from './components/admin/AdminPanel';
 import { useOffice } from './contexts/OfficeContext';
 import { jobNimbusApi, type JobNimbusLocation, type LocationInfo } from './services/apiService';
@@ -693,6 +694,9 @@ function AppContent() {
           {isLoading && <LoadingSpinner />}
           
           <Routes>
+            {/* Landing Page */}
+            <Route path="/" element={<Landing />} />
+
             {/* Public Routes */}
             <Route
               path="/login"
