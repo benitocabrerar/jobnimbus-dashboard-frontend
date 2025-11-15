@@ -3,7 +3,7 @@
  * Handles all authentication-related API calls to the new backend
  */
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://jobnimbus-dashboard-api.onrender.com/api';
 
 export interface LoginCredentials {
   email: string;

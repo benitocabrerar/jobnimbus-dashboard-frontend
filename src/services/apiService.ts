@@ -14,7 +14,7 @@ export interface LocationInfo {
 // Servicio centralizado actualizado para usar herramientas MCP corregidas
 class JobNimbusApiService {
   // Usar el backend autenticado que integra con MCP server
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = import.meta.env.VITE_API_URL || 'https://jobnimbus-dashboard-api.onrender.com';
   private maxRetries = 3;
   private retryDelay = 2000; // 2 segundos
   private connectionState: 'connected' | 'connecting' | 'disconnected' | 'error' = 'disconnected';
