@@ -152,7 +152,7 @@ interface NavigationItem {
 
 const navigationItems: NavigationItem[] = [
   {
-    path: '/',
+    path: '/app',
     label: 'Dashboard Principal',
     icon: <DashboardIcon />,
     description: 'Vista general de métricas y KPIs'
@@ -713,7 +713,7 @@ function AppContent() {
 
             {/* Protected Routes */}
             <Route
-              path="/"
+              path="/app"
               element={
                 <PrivateRoute>
                   <DashboardView showNotification={showNotification} />

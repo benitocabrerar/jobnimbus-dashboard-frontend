@@ -36,7 +36,7 @@ export const Login: React.FC = () => {
     try {
       await login({ email, password });
       // Redirect to dashboard on successful login
-      navigate('/');
+      navigate('/app');
     } catch (err: any) {
       setError(err.message || 'Login failed. Please check your credentials.');
     } finally {
