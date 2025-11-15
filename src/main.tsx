@@ -7,7 +7,7 @@ import AppFixed from './AppFixed'; // Using CSS-based sidebar instead of Materia
 
 import './style.css';
 
-ReactDOM.createRoot(document.getElementById('app')!).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AppFixed />
   </React.StrictMode>
